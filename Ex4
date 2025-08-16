@@ -1,0 +1,207 @@
+<html>
+<head>
+  <title>User Registration Form Validation</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #6dd5ed, #2193b0);
+      padding: 20px;
+    }
+    form {
+      background: white;
+      max-width: 420px;
+      margin: auto;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+    h2 {
+      text-align: center;
+      color: #2193b0;
+      margin-bottom: 15px;
+    }
+    label {
+      font-weight: bold;
+      margin-top: 12px;
+      display: block;
+      color: #333;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+      transition: 0.3s;
+    }
+    input:focus, select:focus {
+      border-color: #2193b0;
+      box-shadow: 0 0 6px #2193b0;
+      outline: none;
+    }
+    input[type="radio"] {
+      width: auto;
+      margin-right: 5px;
+    }
+    .gender-group label {
+      display: inline-block;
+      margin-right: 15px;
+      font-weight: normal;
+      color: #444;
+    }
+    input[type="submit"] {
+      margin-top: 20px;
+      padding: 12px;
+      background: linear-gradient(135deg, #ff512f, #dd2476);
+      border: none;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 6px;
+      transition: 0.3s;
+    }
+    input[type="submit"]:hover {
+      background: linear-gradient(135deg, #dd2476, #ff512f);
+      transform: scale(1.05);
+    }
+    .checkbox-label {
+      display: flex;
+      align-items: center;
+      margin-top: 15px;
+      font-size: 14px;
+      color: #333;
+    }
+    .checkbox-label input {
+      width: auto;
+      margin-right: 10px;
+    }
+  </style>
+  <script>
+    function validation(form) {
+      var namePattern = /^\w+$/;
+      var username = document.getElementById("username").value.trim();
+      if (!namePattern.test(username)) {
+          alert("Enter a valid username (only letters, digits, underscore)");
+          return false;
+      }
+
+      var password = document.getElementById("password").value;
+      var confirmPassword = document.getElementById("confirmPassword").value;
+      if (password.length < 6) {
+          alert("Password must be at least 6 characters long");
+          return false;
+      }
+      if (password !== confirmPassword) {
+          alert("Passwords do not match");
+          return false;
+      }
+
+      var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      var email = document.getElementById("email").value.trim();
+      if (!emailPattern.test(email)) {
+          alert("Enter a valid email address");
+          return false;
+      }
+
+      var phonePattern = /^[0-9]{10}$/;
+      var phone = document.getElementById("phone").value.trim();
+      if (!phonePattern.test(phone)) {
+          alert("Enter a valid 10-digit phone number");
+          return false;
+      }
+
+      var ccPattern = /^[0-9]{16}$/;
+      var ccNumber = document.getElementById("creditcard").value.trim();
+      if (!ccPattern.test(ccNumber)) {
+          alert("Enter a valid 16-digit credit card number");
+          return false;
+      }
+
+      var submissionDate = document.getElementById("submissionDate").value;
+      if (!submissionDate) {
+          alert("Please select the date of submission");
+          return false;
+      }
+      if (new Date(submissionDate) > new Date()) {
+          alert("Date of submission cannot be in the future");
+          return false;
+      }
+
+      var genderRadios = form.gender;
+      var genderChecked = false;
+      for (var i = 0; i < genderRadios.length; i++) {
+        if (genderRadios[i].checked) {
+          genderChecked = true;
+          break;
+        }
+      }
+      if (!genderChecked) {
+          alert("Please choose your gender");
+          return false;
+      }
+
+      if (form.dept.selectedIndex <= 0) {
+          alert("Please choose your department");
+          return false;
+      }
+
+      if (!document.getElementById("agree").checked) {
+          alert("Please agree to the terms");
+          return false;
+      }
+
+      alert("🎉 Registration Successful!\nSubmission Date: " + submissionDate);
+      return true;
+    }
+  </script>
+</head>
+<body>
+
+<h2>User Registration Form</h2>
+
+<form name="form" onsubmit="return validation(this)">
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username">
+
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password">
+
+    <label for="confirmPassword">Confirm Password:</label>
+    <input type="password" id="confirmPassword" name="confirmPassword">
+
+    <label for="email">Email:</label>
+    <input type="text" id="email" name="email">
+
+    <label for="phone">Phone:</label>
+    <input type="text" id="phone" name="phone">
+
+    <label for="creditcard">Credit Card Number:</label>
+    <input type="text" id="creditcard" name="creditcard">
+
+    <label>Date of Submission:</label>
+    <input type="date" id="submissionDate" name="submissionDate">
+
+    <label>Gender:</label>
+    <div class="gender-group">
+      <label><input type="radio" name="gender" value="male"> Male</label>
+      <label><input type="radio" name="gender" value="female"> Female</label>
+    </div>
+
+    <label for="dept">Department:</label>
+    <select name="dept" id="dept">
+        <option value="">Select Dept</option>
+        <option value="CSE">CSE</option>
+        <option value="ECE">ECE</option>
+        <option value="EEE">EEE</option>
+        <option value="MECH">MECH</option>
+    </select>
+
+    <label class="checkbox-label"><input type="checkbox" id="agree" name="agree"> I agree to the terms</label>
+
+    <input type="submit" value="Register">
+</form>
+
+</body>
+</html>
